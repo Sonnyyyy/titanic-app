@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Passenger } from '../models/passenger';
 
 @Injectable({
@@ -8,13 +8,15 @@ import { Passenger } from '../models/passenger';
 })
 export class DataService {
 
-  data = this.store.collection('train').valueChanges({ idField: 'id' }) as Observable<Passenger[]>;
+  data = this.db.collection('passengers').valueChanges({ idField: 'id' }) as Observable<Passenger[]>;
 
-  constructor(private store: AngularFirestore) { }
+  constructor(
+    private db: AngularFirestore
+  ) { }
 
   getPassengers(): Promise<Passenger[]>{
     return new Promise((resolve) => {
-      this.data.subscribe((data) => {
+      this.data.pipe(take(1)).subscribe((data) => {
         resolve(data);
       })
     })

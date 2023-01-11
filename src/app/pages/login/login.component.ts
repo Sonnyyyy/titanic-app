@@ -9,8 +9,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  login: User = {username: "dave", password: "password123"}
+  user: User = {username: "dave", password: "pass123"}
   wrongAlert: boolean = false;
+  takenAlert: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -19,13 +20,27 @@ export class LoginComponent {
     this.auth.loggingIn = true;
   }
 
-  submit(){
-    if(this.auth.login(this.login)){
-      this.auth.loggingIn = false;
-      this.router.navigate(['search'])
-    }
-    else{
-      this.wrongAlert = true;
-    } 
+  login(){
+    this.auth.login(this.user).then((loggedIn) => {
+      if(loggedIn){
+        this.auth.loggingIn = false;
+        this.router.navigate(['search'])
+      }
+      else{
+        this.wrongAlert = true;
+      } 
+    })
+  }
+
+  signin(){
+    this.auth.signin(this.user).then((loggedIn) => {
+      if(loggedIn){
+        this.auth.loggingIn = false;
+        this.router.navigate(['search'])
+      }
+      else{
+        this.takenAlert = true;
+      } 
+    })
   }
 }

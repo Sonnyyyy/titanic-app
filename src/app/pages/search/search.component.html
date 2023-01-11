@@ -1,5 +1,10 @@
-<input type="text" name="search" [(ngModel)]="search"/>
-<button class="btn btn-primary" (click)="submit()">Search</button>
+<h3>Search</h3>
 <div>
-  <button class="btn btn-primary" (click)="submit()">Filter by gender</button>
+  <button class="btn btn-outline-primary" (click)="byGender()">Filter by gender</button>
+</div>
+<div>
+  <button class="btn btn-outline-primary" (click)="byAge()">Filter by age</button>
+</div>
+<div>
+  <button class="btn btn-outline-primary" (click)="byClass()">Filter by class</button>
 </div>

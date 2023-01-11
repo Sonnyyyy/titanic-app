@@ -1,31 +1,38 @@
-<ngx-charts-pie-chart *ngIf="displayChart"
+<h3>Chart</h3>
+
+<button class="btn btn-outline-primary" (click)="reset()">Reset Search</button>
+
+<div class="row">
+  <span *ngIf="search.by == 'age'">average age: {{ averageAge }} years old</span>
+</div>
+<div class="row">
+  <span *ngIf="search.by == 'age'">standard deviation: {{ standardDeviation }} years</span>
+</div>
+
+<ngx-charts-bar-vertical *ngIf="displayChart"
   [results]="chart"
   [view]="view"
   [scheme]="colorScheme"
   [gradient]="gradient"
   [legend]="showLegend"
   [legendPosition]="legendPosition"
-  [labels]="showLabels"
-  [doughnut]="isDoughnut"
   >
-</ngx-charts-pie-chart>
-
-<button class="btn btn-primary" (click)="reset()">Reset Search</button>
+</ngx-charts-bar-vertical>
 
 <div *ngFor="let passenger of passengers" class="row">
-  <div class="col">
+  <div class="col-1">
     <span>{{ passenger.PassengerId }}</span>
   </div>
-  <div class="col">
+  <div class="col-7">
     <span>{{ passenger.Name }}</span>
   </div>
-  <div class="col">
+  <div class="col" *ngIf="search.by == 'gender'">
     <span>{{ passenger.Sex }}</span>
   </div>
-  <div class="col">
+  <div class="col" *ngIf="search.by == 'age'">
     <span>{{ passenger.Age }}</span>
   </div>
-  <div class="col">
-    <span>{{ passenger.Survived }}</span>
+  <div class="col" *ngIf="search.by == 'class'">
+    <span>{{ passenger.Pclass }}</span>
   </div>
 </div>
