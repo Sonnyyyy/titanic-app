@@ -15,10 +15,12 @@ export class AppComponent implements OnInit {
     private router: Router
   ){}
 
+  //onInit, get the username from storage
   ngOnInit(): void {
     this.auth.username = localStorage.getItem('username') as string
   }
 
+  //logout button at the top right of the screen
   logout(){
     this.auth.logout()
     this.router.navigate(['login'])

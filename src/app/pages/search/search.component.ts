@@ -8,7 +8,7 @@ import { SearchService } from 'src/app/services/search.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
 
   constructor(
     public search: SearchService,
@@ -16,30 +16,21 @@ export class SearchComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-  }
-
-  submit(){
-    this.router.navigate(['chart']);
-  }
-
+  //navigate to the gender chart
   byGender(){
     this.search.by = "gender";
     this.router.navigate(['chart']);
   }
 
+  //navigate to the age chart
   byAge(){
     this.search.by = "age";
     this.router.navigate(['chart']);
   }
 
+  //navigate to the class chart
   byClass(){
     this.search.by = "class";
     this.router.navigate(['chart']);
-  }
-
-  logout(){
-    this.auth.logout()
-    this.router.navigate(['login']);
   }
 }

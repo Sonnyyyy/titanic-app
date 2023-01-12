@@ -10,6 +10,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router){}
 
+  //only get access to some pages when a username is in the storage
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

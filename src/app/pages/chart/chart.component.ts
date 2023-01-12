@@ -20,6 +20,7 @@ export class ChartComponent implements OnInit {
   averageAge: number = 0;
   standardDeviation: number = 0;
 
+  //ngx-charts options
   view: [number, number] = [800, 450];
   gradient: boolean = false;
   showLegend: boolean = true;
@@ -39,6 +40,7 @@ export class ChartComponent implements OnInit {
     this.getPassengers();
   }
 
+  //get the passengers from DataService, then keep only the survivors and filter those by the selected search
   async getPassengers(){
     this.passengers = await this.data.getPassengers();
     let survivors: Passenger[] = []
@@ -60,6 +62,7 @@ export class ChartComponent implements OnInit {
     }
   }
 
+  //populate the chart array with the stats, in the correct format
   filterByGender(){
     this.chart = [
       {
@@ -82,49 +85,53 @@ export class ChartComponent implements OnInit {
     this.displayChart = true;
   }
 
+  //populate the chart array with the stats, in the correct format
   filterByAge(){
     this.chart = [
       {
-        name: "0-15",
+        name: "0-12",
         value: 0
       },
       {
-        name: "16-30",
+        name: "13-25",
         value: 0
       },
       {
-        name: "31-45",
+        name: "26-37",
         value: 0
       },
       {
-        name: "46-60",
+        name: "38-50",
         value: 0
       },
       {
-        name: "61+",
+        name: "51+",
         value: 0
       }
     ];
     this.passengers.forEach(passenger => {
-      if(passenger.Age < 16){
-        this.chart[0].value += 1
-      }
-      if(passenger.Age < 31){
-        this.chart[1].value += 1
-      }
-      if(passenger.Age < 46){
-        this.chart[2].value += 1
-      }
-      if(passenger.Age < 61){
-        this.chart[3].value += 1
-      }
-      if(passenger.Age >= 61){
-        this.chart[4].value += 1
+      if(!isNaN(passenger.Age)){
+        if(passenger.Age < 13){
+          this.chart[0].value += 1
+        }
+        if(passenger.Age < 26){
+          this.chart[1].value += 1
+        }
+        if(passenger.Age < 38){
+          this.chart[2].value += 1
+        }
+        if(passenger.Age < 51){
+          this.chart[3].value += 1
+        }
+        if(passenger.Age >= 51){
+          this.chart[4].value += 1
+        }
       }
     });
     this.displayChart = true;
   }
 
+  //populate the chart array with the stats, in the correct format
   filterByClass(){
     this.chart = [
       {
@@ -141,27 +148,32 @@ export class ChartComponent implements OnInit {
       }
     ];
     this.passengers.forEach(passenger => {
-      if(passenger.Pclass == 1){
-        this.chart[0].value += 1
-      }
-      if(passenger.Pclass == 2){
-        this.chart[1].value += 1
-      }
-      if(passenger.Pclass == 3){
-        this.chart[2].value += 1
+      if(!isNaN(passenger.Pclass)){
+        if(passenger.Pclass == 1){
+          this.chart[0].value += 1
+        }
+        if(passenger.Pclass == 2){
+          this.chart[1].value += 1
+        }
+        if(passenger.Pclass == 3){
+          this.chart[2].value += 1
+        }
       }
     });
     this.displayChart = true;
   }
 
+  //calculate the average age of the survivors, then calculate the standard deviation
   calculateAverage(){
     let sum: number = 0;
     let count: number = 0;
     this.passengers.forEach(passenger => {
-      sum += passenger.Age;
-      count += 1;
+      if(!isNaN(passenger.Age)){
+        sum += passenger.Age;
+        count += 1;
+      }
     });
-    this.averageAge = sum / count;
+    this.averageAge = Math.round((sum / count) * 10) / 10;
     this.calculateDeviation();
   }
 
@@ -169,18 +181,16 @@ export class ChartComponent implements OnInit {
     let sum: number = 0;
     let count: number = 0;
     this.passengers.forEach(passenger => {
-      sum += Math.pow(Math.abs(passenger.Age - this.averageAge), 2);
-      count += 1;
+      if(!isNaN(passenger.Age)){
+        sum += Math.pow(Math.abs(passenger.Age - this.averageAge), 2);
+        count += 1;
+      }
     });
-    this.standardDeviation = Math.sqrt(sum / count);
+    this.standardDeviation = Math.round(Math.sqrt(sum / count) * 10) / 10;
   }
 
+  //reset the reach, go back to the search page
   reset(){
     this.router.navigate(['search'])
-  }
-
-  logout(){
-    this.auth.logout()
-    this.router.navigate(['login'])
   }
 }
